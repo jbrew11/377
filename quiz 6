@@ -1,0 +1,32 @@
+Yhat is predicted value of Y
+OLS fitted value Y1= Bhat0+Bhat1*X1 is the models prediction of Y at X
+Residual=actual value-predicted value or Uhat1=Yi-Yhati
+Residual=Reality-Regression Prediction
+a positive residual means Residual=actual-predicted is >0 this is an underprediction
+actual-predicted<0 overpredicted 
+Total=explained+unexplained or SST=SSE+SSR
+The sum of OLS residuals always is equal to 0
+R^2 is how much variation of Y is explained by X, closer to 1 more of Ys variation explained by X, 0 less explained
+R^2=SSR/SST
+#q9 find slope
+x<-c(8,4,4)
+y<-c(3,8,12)
+coef(lm(y~x))
+#q10 find intercept
+x = c(6, 7, 6)
+y = c(3, 12, 1)
+model = lm(y ~ x)
+coef(model)
+#q11 predict y at x
+x = c(2,4,8)
+y = c(11,4,0)
+model <-lm(y~x)
+coef(model)
+predict(model, newdata=data.frame(x=6))
+#15 for the fitted line yhat=-1+8/10*x and 3 points find ssr= (yi-yhati)^2
+x=c(7,2,9)
+y=c(11,13,9)
+yhat=-1+(8/10)*x
+sum((y-yhat)^2)
+#17-20 R^2=SSR/SST SST=SSE+SSR
+#20 SSR=(1-R^2)(SST)
