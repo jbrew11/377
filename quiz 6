@@ -7,7 +7,9 @@ actual-predicted<0 overpredicted
 Total=explained+unexplained or SST=SSE+SSR
 The sum of OLS residuals always is equal to 0
 R^2 is how much variation of Y is explained by X, closer to 1 more of Ys variation explained by X, 0 less explained
-R^2=SSR/SST
+R^2=SSE/SST
+R^2=1-SSR/SST
+1-(45/221)
 #q9 find slope
 x<-c(8,4,4)
 y<-c(3,8,12)
@@ -29,4 +31,31 @@ y=c(11,13,9)
 yhat=-1+(8/10)*x
 sum((y-yhat)^2)
 #17-20 R^2=SSR/SST SST=SSE+SSR
-#20 SSR=(1-R^2)(SST)
+#what fracrio n of variation is unexplained given SST and SSR is SSR/SST
+#20 SSR=(1-R^2)(SST) given SST and R^2 find SSR
+(1-(42/100))*(291)
+
+x<-c(7,1,2)
+y<-c(4,6,5)
+coef(lm(y~x))
+x<-c(7,1,8)
+y<-c(5,12,4)
+model=lm(y~x)
+coef(model)
+x<-c(6,6,8)
+y<-c(2,5,10)
+model=lm(y~x)
+coef(model)
+predict(model, newdata=data.frame(x=7))
+3+(3/10)*13
+2+(7/10)*8
+4-7.6
+(4/10)*4
+x=c(2,9,6)
+y=c(13,2,1)
+yhat=4+(6/10)*x
+sum((y-yhat)^2)
+251-79
+45/221
+
+
