@@ -1,0 +1,83 @@
+x <- c()
+y <- c()
+
+mean(x)
+var(x)
+sd(x)
+cov(x,y)
+cor(x,y)
+#probability
+x <- c(1, 2, 4)
+p <- c(0.2, 0.5, 0.3)
+EX <- sum(x*p)
+EX2 <- sum(x^2*p)
+EX2
+VarX <- EX2 - EX^2
+SDX <- sqrt(VarX)
+VarX
+SDX
+# Expected values
+EX  <- sum(x*p)
+EY  <- sum(y*p)
+
+EX2 <- sum(x^2*p)
+EY2 <- sum(y^2*p)
+EXY <- sum(x*y*p)
+
+# Population variance
+varX <- EX2 - EX^2
+varY <- EY2 - EY^2
+
+# Population standard deviation
+sdX <- sqrt(varX)
+sdY <- sqrt(varY)
+
+# Population covariance
+covXY <- EXY - EX*EY
+
+# Population correlation
+corXY <- covXY / (sdX*sdY)
+
+# REGRESSION
+#y=b0+b1*x+u
+x <- c(2, 4, 6, 8, 10)
+y <- c(5, 7, 8, 11, 14)
+
+reg <- lm(y ~ x)
+coef(reg)                     # intercept + slope
+coef(reg)[1]                  # intercept b0
+coef(reg)[2]                  # slope b1
+
+predict(reg, newdata = data.frame(x = 6))     # predicted y at x=6
+actual_y - predict(reg, newdata = data.frame(x = 6))   # residual
+reg$fitted.values            # predicted y values
+reg$residuals                # residuals
+sum(resid(reg)^2)             # SSR
+
+summary(reg)$r.squared        # R^2
+
+summary(reg)                  # full regression output
+
+############################################################
+# QUICK REMINDERS
+############################################################
+
+# predicted y:
+# yhat = b0 + b1*x
+
+# residual:
+# actual y - predicted y
+
+# residual > 0  = underpredicted
+# residual < 0  = overpredicted
+
+# R^2:
+# closer to 1 = better fit
+# interpretation = % of variation in y explained by regression
+
+# if given SSE and SST:
+# R^2 = SSE / SST
+
+# if given SSR and SST:
+# R^2 = 1 - SSR / SST
+############################################################
