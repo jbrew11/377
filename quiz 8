@@ -1,0 +1,43 @@
+#q1 log-log regression gives salary=B0+B1log(sales) with salary in thousands. Salary is measured in dollars instead, what hapens?
+# B1 does not change, only B0
+#question 5: percent change of log=b0+b1(log)
+1.24*-6
+#question 6 find regression and change by 5% 
+lm(log(salary)~roe, data=ceosal1)
+reg<-lm(log(salary)~roe, data=ceosal1)
+coef(reg)
+100*coef(reg)[2]*5
+#question 9 wage=B0+B1*educ+U least likely to be omitted is day of week
+#question 13 what makes Var(B1) smaller: a larhger SSTx, more spread out values of x
+
+#question 14 given standard dev and X values find sd(B1hat)
+x<-c(2,3,6,8,9)
+mean(x)
+sum((x-mean(x))^2)
+5/sqrt(37.2) #std dev over square of SSTx
+#one step for q14
+5/sqrt(sum((x-mean(x))^2))
+
+#q15 given n observations and SSR just divide SSR by n-2
+847/(25-2)
+
+#q16 given n observation 14 , SSR=781 and SSTx=7 find std error se(B1)
+#std sqrt of SSR/n-1
+sqrt(781/(14-2))
+#then std/sqrt(SSTx)
+sqrt(781/(14-2))/sqrt(7)
+# Standard dev hat=sqrt(SSR/(n-2))  Standeard error= std dev hat/sqrt(SSTx)
+
+#prob set 8 q 14 In a regression of y on x, the OLS slope is B1hat=.14
+# every value of x is divided by 1,000, what is new OLS slope.
+#multiply slope of B1hat by 100
+
+#q17 given a log regression loghat=1.5+.08x what % does y rise when x is changed (rises by 2)
+# % change=100*B1*change in x
+100*.08*2
+
+#q19 level-log regression yhat=178+28.1*log(x)
+# how many units does y change when x rises by 18%
+# y change= (B1/100)*change in x
+(28.1/100)*18
+
