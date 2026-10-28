@@ -1,0 +1,38 @@
+#10/28 quiz
+#q1 A regression gives test score hat=12+8log(income) what does 8 the mean?
+# a 1% rise in income translates to 8/100= .08 points
+#q2 loghat=2.4+.002x By about what percent does y change when x falls by 3?
+100*.02*-3=-6
+
+#q3 By about what percent does predicted birth weight change when family income rises by 20%?
+# log-log regression
+reg<- lm(log(bwght)~log(faminc), data= bwght)
+b<-coef(reg)
+round(b[2]*20,2)
+#q4 Suppose you could draw 1,000 different random samples from the same population and compute B1
+#in each one. If OLS is unbiased (SLR1–SLR4 hold), which statement is correct?
+#The average of the 1,000 estimates is close to B1
+#q6 under SLR 1-5 Var(B1)=sd^2/SSTx holding all else fixed what changes would make Var(B1) larger
+#A larger error variance of sd^2 and x values bunched more tightly
+#q7 a simple regression on n=13 and sdhat= 9.5, and sample sd of X is Sx=1.2 find the standar error
+#se(B1) hint: SSTX= (n-1)S^2x 
+n<-13; sig<-9.5; Sx<-1.2
+SST<-(n-1)*Sx^2
+round(sig/sqrt(SST),2)
+#Q9 under SLR1-5 a regression has sd(B1)=.78. If the sample were 2 times as large, with the x values spread
+# out in the same way (so SSTx is also 2 times as large), what would sd(B1) be?
+#hint sd(B1)=sd/sqrt(SSTx) multiplying SSTxby k divides the sd by sqrt(k) not by k
+newsd=oldsd/sqrt(k)
+round(.78/sqrt(2),2)
+#q12 a multiple regression ive yhat=10+2.5x1+2.3x2. Find predicted value yhat at x1=13 and x2=15?
+10+2.5*13+2.3*15
+#q13  multiple regression give yhat=9+2.3x1-.2x2 if x1 rises by 3 and x2 rises by 2 by how much does yhat change?
+2.3*3+-.2*2
+#q14 What is the predicted hourly wage of a worker with 14 years of education, 
+#10 years of experience and 5 years of tenure? 
+reg<-lm(wage~educ+exper+tenure, data= wage1)
+b<-coef(reg)
+round(b[1]+b[2]*14+b[3]*10+b[4]*5,2)
+#q15 by how much does the predicted hourly wage change when tenure rises by 3 years
+#, holding education and experience fixed? 
+round(b[4]*3,2)
