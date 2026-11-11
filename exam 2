@@ -1,0 +1,74 @@
+library(wooldridge); data("hprice1"); data("wage1"); data("ceosal1"); data("bwght"); data("gpa1")
+
+# ===== NUMBER QUESTIONS: change the numbers, run the line =====
+# --- sigma, SST, standard errors ---
+sqrt(4250 / (90 - 4 - 1))       # SIGMA-HAT (multiple):  sqrt(SSR / (n - K - 1))
+612 / (20 - 2)                    # SIMPLE regression error VARIANCE:  SSR / (n - 2)
+sqrt(612 / (20 - 2)) / sqrt(40)    # SIMPLE regression SE:  sqrt(SSR/(n-2)) / sqrt(SST)
+(40 - 1) * 2.5^2                  # SST from SD:  (n - 1) * S^2      (S given as variance? don't square)
+x <- c(2, 3, 4, 9, 11); sum((x - mean(x))^2)   # SST from a list of x values
+146 / 15                          # VAR(b1) with TRUE sigma^2:  sigma^2 / SST
+11 / sqrt(9 * 5)                  # SD(b1) with TRUE sigma:  sigma / sqrt(SST)
+0.78 / sqrt(2)                    # SAMPLE DOUBLED (SST x2):  old sd / sqrt(2)
+9 / sqrt(243.75 * (1 - 0.36))     # SE(beta_j) multiple:  sigma / sqrt(SST * (1 - R2_j))
+# --- logs (answer is in %, keep minus signs; a FALL = negative change) ---
+100 * 0.02 * (-3)  # LOG-LEVEL:  log(y) ~ x        % change y = 100 * b * change in x
+100 * -0.045 * 5               #   x in MONTHS, asked about 1 YEAR -> change in x = 12
+100 * (0.052*4 - 0.013*4)         #   two X's change:  100 * (b1*dx1 + b2*dx2)
+(6.5 / 100) * 20                    # LEVEL-LOG:  y ~ log(x)        change y = (b / 100) * % change x
+0.92 * (-12)                      # LOG-LOG:    log(y) ~ log(x)   % change y = b * % change x
+2.35 + log(1000)                  # UNITS: y x1000 in a log(y) model -> new intercept = old + log(1000); slope same
+# --- multiple regression ---
+1.8*2 + (-0.6)*5                # CHANGE IN Y-HAT:  b1*dx1 + b2*dx2  (no intercept)
+0.5 + -1.2 * -.3               # OVB:  simple slope = b1 + b2 * delta1
+
+# ===== DATA QUESTIONS: one line per question he asks =====
+# "Using BWGHT, regress bwght on cigs and faminc"  ->  lm(Y ~ X's, data = DATASET)
+reg <- lm(bwght ~ cigs + faminc, data = bwght)                 # TYPE: Y ~ X's, data = DATASET
+d   <- model.frame(reg)                                        # just run
+reg$df.residual                                                # "degrees of freedom"
+summary(reg)$sigma                                             # "sigma-hat" / "residual standard error"
+SST <- sum((d$cigs - mean(d$cigs))^2); SST                     # "SST of cigs"        TYPE: X twice
+R2  <- summary(lm(cigs ~ faminc, data = d))$r.squared; R2      # "regress cigs on the other X's, R2"   TYPE: X ~ other X's
+summary(reg)$sigma / sqrt(SST * (1 - R2))                      # "se by hand"         just run
+summary(reg)                                                   # "se from R": X's row, Std. Error column
+# only ONE X?  skip the R2 line, use:  summary(reg)$sigma / sqrt(SST)
+# column names?  names(bwght)
+
+#Using HPRICE1, regress price on sqrft and bdrms.
+#Using GPA1, regress colGPA on hsGPA, ACT and skipped. Give the degrees of freedom and the se of ACT by hand.
+Find the se of sqrft by hand.
+reg <- lm(colGPA ~ hsGPA + ACT+skipped, data =gpa1)               # TYPE: Y ~ X's, data = DATASET
+d   <- model.frame(reg)                                        # just run
+reg$df.residual                                                # "degrees of freedom"
+summary(reg)$sigma                                             # "sigma-hat" / "residual standard error"
+SST <- sum((d$ACT - mean(d$ACT))^2); SST                   # "SST of cigs"        TYPE: X twice
+R2  <- summary(lm(ACT ~ hsGPA + skipped, data = d))$r.squared; R2     # "regress cigs on the other X's, R2"   TYPE: X ~ other X's
+summary(reg)$sigma / sqrt(SST * (1 - R2))                      # "se by hand"         just run
+summary(reg)   
+
+# --- LOGS with data: put log() right inside lm ---
+reg2 <- lm(log(salary) ~ log(sales) + roe, data = ceosal1)     # log-log for sales, log-level for roe
+summary(reg2)                                                  # then use the log rules above on the slope
+
+# --- PREDICT ---
+b <- reg$coefficients                                          # b[1] = intercept, b[2] = 1st X, b[3] = 2nd X
+b[1] + b[2]*10 + b[3]*30                                       # level y: plug in
+b2 <- reg2$coefficients
+exp(b2[1] + b2[2]*log(5000) + b2[3]*15)                        # log(y) model: wrap in exp(); logged X -> log(value)
+
+# --- OVB with data: simple slope - multiple slope = b2 * delta1 ---
+coef(lm(bwght ~ cigs, data = bwght))[2] - coef(reg)[2]
+
+# ===== CONCEPTS =====
+# R2_j regression = the X on the OTHER X's (Y is NOT in it). R2_j -> 1 = multicollinearity, SE blows up
+# Unbiased = AVERAGE over many samples equals the true beta (not every sample)
+# Omitted variable that affects Y AND is correlated with X -> BIASED (MLR4 fails). Same signs = up, opposite = down
+# Random/ID/day-of-week variable omitted -> no bias. Y in $1000s, small n, high correlation -> NOT MLR4 problems
+# Heteroskedasticity (MLR5) -> variance formula wrong, but STILL UNBIASED
+# Perfect collinearity (MLR3) -> R shows NA (e.g. total = A + B). High correlation is OK (bigger SE)
+# SLR3: X must vary (if everyone has educ = 12, slope can't be computed)
+# Bigger SST (more spread in X, bigger n) or smaller sigma^2 -> smaller Var(b1). Intercept doesn't matter
+# Residuals ALWAYS: average 0, uncorrelated with each X, line passes through the means. NOT uncorrelated with Y
+# sigma-hat estimates sigma = sd of the ERROR u (not sd of Y, not R2). True sigma given -> "sd"; estimated -> "se"
+# Level y x c -> every b x c.  Level x x c -> its b / c.  log(y) units change -> only the INTERCEPT changes
